@@ -1,4 +1,4 @@
-var Hub = require('./hub'),
+var Hub = require('../lib/hub'),
     util = require('util');
 
 Hub.channel('chat').subscribe('chat.new.remote', function(data){

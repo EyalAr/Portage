@@ -1,4 +1,4 @@
-var Channel = require('./channel'),
+var Channel = require('../lib/channel'),
     util = require('util'),
     c = new Channel();
 
@@ -61,4 +61,4 @@ try{
     c.subscribe('**.bla', function(){ console.log("ERROR"); });
 } catch (e) { console.log(e); }
 
-console.log(util.inspect(p, false, null));
+console.log(util.inspect(c, false, null));
