@@ -3,14 +3,14 @@
 
 var _ = require('lodash');
 
-function Portage(){
+function Channel(){
     this._separator = '.';
     this._wildcard = '*';
     this._greedyWildcard = '**';
     this._topicsDefs = {};
 }
 
-Portage.prototype.subscribe = function(topic, cb){
+Channel.prototype.subscribe = function(topic, cb){
     if (_.isString(topic)) topic = topic.split(this._separator);
     if (!_.isArray(topic)) throw Error("topic must be an array or a string");
     if (!topic.length) throw Error("topic must contain at least one section");
@@ -39,7 +39,7 @@ Portage.prototype.subscribe = function(topic, cb){
     topicDef.direct.push(cb);
 };
 
-Portage.prototype.publish = function(topic){
+Channel.prototype.publish = function(topic){
     if (_.isString(topic)) topic = topic.split(this._separator);
     if (!_.isArray(topic)) throw Error("topic must be an array or a string");
     if (!topic.length) throw Error("topic must contain at least one section");
@@ -116,5 +116,5 @@ function gatherDeepCbs(topicsDefs){
     return cbs;
 }
 
-module.exports = Portage;
+module.exports = Channel;
 })();
