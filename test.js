@@ -28,6 +28,15 @@ p.subscribe('chat.*.*', function(data){
 p.subscribe('*.*.*', function(data){
     console.log(8, data);
 });
+p.subscribe('chat.new.**', function(data){
+    console.log(9, data);
+});
+p.subscribe('chat.**', function(data){
+    console.log(10, data);
+});
+p.subscribe('**', function(data){
+    console.log(11, data);
+});
 p.subscribe('*', function(data){
     console.log("ERROR");
 });
@@ -38,5 +47,17 @@ p.subscribe('chat.*', function(data){
     console.log("ERROR");
 });
 p.publish('chat.new.remote', "hello");
+
+try{
+    p.publish('chat.*.remote', "ERROR");
+} catch (e) { console.log(e); }
+
+try{
+    p.publish('chat.**', "ERROR");
+} catch (e) { console.log(e); }
+
+try{
+    p.subscribe('**.bla', function(){ console.log("ERROR"); });
+} catch (e) { console.log(e); }
+
 console.log(util.inspect(p, false, null));
-p.publish('chat.*.remote', "ERROR");
