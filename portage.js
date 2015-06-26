@@ -11,7 +11,6 @@ function Portage(){
 }
 
 Portage.prototype.subscribe = function(topic, cb){
-    var greedyWildcard = this._greedyWildcard;
     if (_.isString(topic)) topic = topic.split(this._separator);
     if (!_.isArray(topic)) throw Error("topic must be an array or a string");
     if (!topic.length) throw Error("topic must contain at least one section");
@@ -41,7 +40,6 @@ Portage.prototype.subscribe = function(topic, cb){
 };
 
 Portage.prototype.publish = function(topic){
-    var wildcard = this._wildcard;
     if (_.isString(topic)) topic = topic.split(this._separator);
     if (!_.isArray(topic)) throw Error("topic must be an array or a string");
     if (!topic.length) throw Error("topic must contain at least one section");
