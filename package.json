@@ -9,9 +9,12 @@
   "dependencies": {
     "lodash": "^3.9.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "should": "^7.0.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --opts tests/mocha.opts tests"
   },
   "repository": {
     "type": "git",
