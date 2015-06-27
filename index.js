@@ -1,3 +1,1 @@
-
-
-module.exports = require('./lib/defaultHub');
+module.exports = require('./defaultHub');

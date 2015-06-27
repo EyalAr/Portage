@@ -1,4 +1,4 @@
-var Channel = require('../lib/channel'),
+var Channel = require('../channel'),
     util = require('util'),
     c = new Channel();
 

@@ -1,4 +1,4 @@
-var Hub = require('../lib/hub'),
+var Hub = require('../hub'),
     util = require('util'),
     h = new Hub();
 
