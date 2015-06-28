@@ -6,7 +6,7 @@ var _ = require('lodash');
 function Channel(){
     this._separator = '.';
     this._wildcard = '*';
-    this._greedyWildcard = '**';
+    this._greedyWildcard = '#';
     this._topicsDefs = {};
 }
 

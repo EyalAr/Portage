@@ -76,8 +76,8 @@ cards of 2 types:
   `'chat.*.server'` will match both `'chat.new-message.server'` and
   `'chat.remove-message.server'`, **but not** `'chat.new-message.local'`.
 
-- `'**'`: Greedy wild card. Must be the last section in the pattern.
+- `'#'`: Greedy wild card. Must be the last section in the pattern.
   Will match one or more sections at the end of the topic. For example,
-  `'chat.**'` will match `'chat.new-message.server'`,
+  `'chat.#'` will match `'chat.new-message.server'`,
   `'chat.remove-message.server'` **and** `'chat.new-message.local'`. Basically
   it will match any topic that begins with `'chat.'`.
