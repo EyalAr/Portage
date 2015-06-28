@@ -83,7 +83,7 @@ function gatherCbs(topic, topicsDefs, wildcard, greedyWildcard){
         for (subtopic in topicsDefs.subtopics){
             if (topicsDefs.subtopics.hasOwnProperty(subtopic)){
                 if (subtopic === classifier || subtopic === wildcard || subtopic === greedyWildcard){
-                    cbs.push.apply(cbs, topicsDefs.subtopics[subtopic].direct);
+                    _push(cbs, topicsDefs.subtopics[subtopic].direct);
                 }
             }
         }
@@ -93,7 +93,7 @@ function gatherCbs(topic, topicsDefs, wildcard, greedyWildcard){
                 if (subtopic === greedyWildcard){
                     cbs.push.apply(cbs, gatherDeepCbs(topicsDefs.subtopics[subtopic]));
                 } else if (subtopic === classifier || subtopic === wildcard){
-                    cbs.push.apply(cbs, gatherCbs(rest, topicsDefs.subtopics[subtopic], wildcard, greedyWildcard));
+                    _push(cbs, gatherCbs(rest, topicsDefs.subtopics[subtopic], wildcard, greedyWildcard));
                 }
             }
         }
@@ -109,11 +109,16 @@ function gatherDeepCbs(topicsDefs){
 
     for (subtopic in topicsDefs.subtopics){
         if (topicsDefs.subtopics.hasOwnProperty(subtopic)){
-            cbs.push.apply(cbs, gatherDeepCbs(topicsDefs[subtopic]));
+            _push(cbs, gatherDeepCbs(topicsDefs[subtopic]));
         }
     }
 
     return cbs;
+}
+
+function _push(target, elements){
+    var i;
+    for (i = 0 ; i < elements.length ; i++) target.push(elements[i]);
 }
 
 module.exports = Channel;
