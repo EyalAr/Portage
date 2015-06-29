@@ -90,7 +90,7 @@ describe("Channels", function(){
 
                 it("should invoke callback once with correct data", function(done){
                     var topic = "test.hello.world",
-                        pattern = "test.**",
+                        pattern = "test.#",
                         data = "foo";
 
                     c.subscribe(pattern, function(spy){
@@ -109,7 +109,7 @@ describe("Channels", function(){
 
                 it("should invoke callback once with correct data", function(done){
                     var topic = "test.hello.world",
-                        pattern = "**",
+                        pattern = "#",
                         data = "foo";
 
                     c.subscribe(pattern, function(spy){
@@ -128,8 +128,8 @@ describe("Channels", function(){
 
                 it("should invoke callback once with correct data", function(done){
                     var topic = "test.hello.world.nice.to.meet.you",
-                        patternOk = "test.*.world.*.to.**",
-                        patternNotOk = "test.*.world.to.**",
+                        patternOk = "test.*.world.*.to.#",
+                        patternNotOk = "test.*.world.to.#",
                         data = "foo";
 
                     c.subscribe(patternOk, function(spy){
@@ -224,7 +224,7 @@ describe("Channels", function(){
                 it("should invoke callback twice with correct data", function(done){
                     var topic1 = "test.hello.world",
                         topic2 = "test.world.hello",
-                        pattern = "test.**",
+                        pattern = "test.#",
                         data = "foo",
                         called = false;
 
@@ -247,7 +247,7 @@ describe("Channels", function(){
                 it("should invoke callback twice with correct data", function(done){
                     var topic1 = "test.hello.world",
                         topic2 = "test.world.hello",
-                        pattern = "**",
+                        pattern = "#",
                         data = "foo",
                         called = false;
 
@@ -270,7 +270,7 @@ describe("Channels", function(){
                 it("should invoke callback twice with correct data", function(done){
                     var topic1 = "test.hello.world.nice.to.meet.you",
                         topic2 = "test.hello.world.nice.to.see.you",
-                        pattern = "test.*.world.*.to.**",
+                        pattern = "test.*.world.*.to.#",
                         data = "foo",
                         called = false;
 
@@ -298,8 +298,8 @@ describe("Channels", function(){
 
             it("should invoke each callback once with correct data", function(done){
                 var topic = "test.hello.world.nice.to.meet.you",
-                    pattern1 = "*.hello.**",
-                    pattern2 = "test.*.world.nice.to.**",
+                    pattern1 = "*.hello.#",
+                    pattern2 = "test.*.world.nice.to.#",
                     data = "foo",
                     s1Called = false,
                     s2Called = false;
@@ -328,8 +328,8 @@ describe("Channels", function(){
             it("should invoke each callback twice with correct data", function(done){
                 var topic1 = "test.hello.world.nice.to.meet.you",
                     topic2 = "test.hello.world.nice.to.see.you",
-                    pattern1 = "*.hello.**",
-                    pattern2 = "test.*.world.nice.to.**",
+                    pattern1 = "*.hello.#",
+                    pattern2 = "test.*.world.nice.to.#",
                     data = "foo",
                     s1Called = 0,
                     s2Called = 0;
