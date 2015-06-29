@@ -55,13 +55,15 @@ returned. Otherwise the existing channel with that name is returned.
 
 ### Subscribe to a topic
 
-`myChannel.subscribe(pattern, callback)`
+`var s = myChannel.subscribe(pattern, callback)`
 
 - `pattern {String}`: The pattern of topics of which publications to subscribe.
    See topic structure below.
 - `callback {Function}`: Callback function to invoke when a message is published
    whose topic matches the pattern. The function is called with the published
    arguments.
+
+**Return value** is an object with an `unsubscribe` method: `s.unsubscribe()`.
 
 ### Topics structure
 
