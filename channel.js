@@ -14,6 +14,7 @@ function Channel(){
 Channel.prototype.subscribe = function(topic, cb){
     if (_.isString(topic)) topic = topic.split(this._separator);
     if (!_.isArray(topic)) throw Error("topic must be an array or a string");
+    if (!_.isFunction(cb)) throw Error("callback must be a function");
     if (!topic.length) throw Error("topic must contain at least one section");
     if (!topic.every(_.isString)) throw Error("all topic sections must be strings");
     if (topic.slice(0, -1).some(isGreedyWildcard.bind(this)))
