@@ -1,7 +1,8 @@
 (function(){
 "use strict";
 
-var _ = require('lodash');
+var _ = require('lodash'),
+    Subscription = require('./subscription');
 
 function Channel(){
     this._separator = '.';
@@ -36,7 +37,9 @@ Channel.prototype.subscribe = function(topic, cb){
         };
     }
 
-    topicDef.direct.push(cb);
+    var s = new Subscription(cb, topicDef.direct);
+    topicDef.direct.push(s);
+    return s;
 };
 
 Channel.prototype.publish = function(topic){
@@ -47,7 +50,7 @@ Channel.prototype.publish = function(topic){
     if (topic.some(isWildcard.bind(this)) || topic.some(isGreedyWildcard.bind(this)))
         throw Error("topic section cannot be a wildcard");
 
-    var cbs = gatherCbs(
+    var subs = gatherSubscriptions(
             topic,
             {
                 direct: [],
@@ -58,10 +61,10 @@ Channel.prototype.publish = function(topic){
         ),
         data = Array.prototype.slice.call(arguments, 1);
 
-    cbs.forEach(invoke);
+    subs.forEach(invoke);
 
-    function invoke(cb){
-        cb.apply(null, data);
+    function invoke(s){
+        s.invoke(data);
     }
 };
 
@@ -73,17 +76,21 @@ function isGreedyWildcard(s){
     return s === this._greedyWildcard;
 }
 
-function gatherCbs(topic, topicsDefs, wildcard, greedyWildcard){
+function gatherSubscriptions(topic, topicsDefs, wildcard, greedyWildcard){
     var subtopic,
         classifier = topic[0],
         rest = topic.slice(1),
-        cbs = [];
+        subs = [];
 
     if (!rest.length){
         for (subtopic in topicsDefs.subtopics){
             if (topicsDefs.subtopics.hasOwnProperty(subtopic)){
-                if (subtopic === classifier || subtopic === wildcard || subtopic === greedyWildcard){
-                    _push(cbs, topicsDefs.subtopics[subtopic].direct);
+                if (
+                    subtopic === classifier ||
+                    subtopic === wildcard ||
+                    subtopic === greedyWildcard
+                ){
+                    _push(subs, topicsDefs.subtopics[subtopic].direct);
                 }
             }
         }
@@ -91,29 +98,42 @@ function gatherCbs(topic, topicsDefs, wildcard, greedyWildcard){
         for (subtopic in topicsDefs.subtopics){
             if (topicsDefs.subtopics.hasOwnProperty(subtopic)){
                 if (subtopic === greedyWildcard){
-                    cbs.push.apply(cbs, gatherDeepCbs(topicsDefs.subtopics[subtopic]));
+                    _push(
+                        subs,
+                        gatherDeepSubscriptions(
+                            topicsDefs.subtopics[subtopic]
+                        )
+                    );
                 } else if (subtopic === classifier || subtopic === wildcard){
-                    _push(cbs, gatherCbs(rest, topicsDefs.subtopics[subtopic], wildcard, greedyWildcard));
+                    _push(
+                        subs,
+                        gatherSubscriptions(
+                            rest,
+                            topicsDefs.subtopics[subtopic],
+                            wildcard,
+                            greedyWildcard
+                        )
+                    );
                 }
             }
         }
     }
 
-    return cbs;
+    return subs;
 }
 
-function gatherDeepCbs(topicsDefs){
-    var subtopic, cbs = [];
+function gatherDeepSubscriptions(topicsDefs){
+    var subtopic, subs = [];
 
-    cbs.push.apply(cbs, topicsDefs.direct);
+    _push(subs, topicsDefs.direct);
 
     for (subtopic in topicsDefs.subtopics){
         if (topicsDefs.subtopics.hasOwnProperty(subtopic)){
-            _push(cbs, gatherDeepCbs(topicsDefs[subtopic]));
+            _push(subs, gatherDeepSubscriptions(topicsDefs[subtopic]));
         }
     }
 
-    return cbs;
+    return subs;
 }
 
 function _push(target, elements){
