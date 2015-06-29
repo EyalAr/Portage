@@ -9,139 +9,160 @@ describe("Channels", function(){
 
             describe("specific topic with one section", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic = "test",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback once with correct data", function(done){
-                    var topic = "test",
-                        data = "foo";
+                c.subscribe(topic, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(topic, function(spy){
-                        should.equal(data, spy);
-                        done();
-                    });
-
+                it("should invoke callback once with correct data", function(){
                     c.publish(topic, data);
+
+                    should.equal(data, spy);
+                    should.equal(called, 1);
                 });
 
             });
 
             describe("specific topic with multiple sections", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic = "test.hello",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback once with correct data", function(done){
-                    var topic = "test.hello",
-                        data = "foo";
+                c.subscribe(topic, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(topic, function(spy){
-                        should.equal(data, spy);
-                        done();
-                    });
-
+                it("should invoke callback once with correct data", function(){
                     c.publish(topic, data);
+                    should.equal(data, spy);
+                    should.equal(called, 1);
                 });
 
             });
 
             describe("pattern with non greedy wildcard (partial)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic = "test.hello",
+                    pattern = "test.*",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback once with correct data", function(done){
-                    var topic = "test.hello",
-                        pattern = "test.*",
-                        data = "foo";
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        done();
-                    });
-
+                it("should invoke callback once with correct data", function(){
                     c.publish(topic, data);
+                    should.equal(data, spy);
+                    should.equal(called, 1);
                 });
 
             });
 
             describe("pattern with non greedy wildcard (full)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topicOk = "test",
+                    topicNotOk = "test.hello",
+                    pattern = "*",
+                    dataOk = "foo",
+                    dataNotOk = "bar",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback once with correct data", function(done){
-                    var topicOk = "test",
-                        topicNotOk = "test.hello",
-                        pattern = "*",
-                        dataOk = "foo",
-                        dataNotOk = "bar";
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(dataOk, spy);
-                        done();
-                    });
-
+                it("should invoke callback once with correct data", function(){
                     c.publish(topicNotOk, dataNotOk);
                     c.publish(topicOk, dataOk);
+                    should.equal(dataOk, spy);
+                    should.equal(called, 1);
                 });
 
             });
 
             describe("pattern with greedy wildcard (partial)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic = "test.hello.world",
+                    pattern = "test.#",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback once with correct data", function(done){
-                    var topic = "test.hello.world",
-                        pattern = "test.#",
-                        data = "foo";
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        done();
-                    });
-
+                it("should invoke callback once with correct data", function(){
                     c.publish(topic, data);
+                    should.equal(data, spy);
+                    should.equal(called, 1);
                 });
 
             });
 
             describe("pattern with greedy wildcard (full)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic = "test.hello.world",
+                    pattern = "#",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback once with correct data", function(done){
-                    var topic = "test.hello.world",
-                        pattern = "#",
-                        data = "foo";
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        done();
-                    });
-
+                it("should invoke callback once with correct data", function(){
                     c.publish(topic, data);
+                    should.equal(data, spy);
+                    should.equal(called, 1);
                 });
 
             });
 
             describe("pattern with mixed wildcards", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic = "test.hello.world.nice.to.meet.you",
+                    patternOk = "test.*.world.*.to.#",
+                    patternNotOk = "test.*.world.to.#",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback once with correct data", function(done){
-                    var topic = "test.hello.world.nice.to.meet.you",
-                        patternOk = "test.*.world.*.to.#",
-                        patternNotOk = "test.*.world.to.#",
-                        data = "foo";
+                c.subscribe(patternOk, cb);
+                c.subscribe(patternNotOk, cb);
 
-                    c.subscribe(patternOk, function(spy){
-                        should.equal(data, spy);
-                        done();
-                    });
+                function cb(_spy){
+                    spy = _spy;
+                    called++;
+                }
 
-                    c.subscribe(patternNotOk, function(spy){
-                        throw Error("Should not be called");
-                    });
-
+                it("should invoke callback once with correct data", function(){
                     c.publish(topic, data);
+                    should.equal(data, spy);
+                    should.equal(called, 1);
                 });
 
             });
@@ -152,136 +173,148 @@ describe("Channels", function(){
 
             describe("specific topic", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic = "test.hello",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback twice with correct data", function(done){
-                    var topic = "test.hello",
-                        data = "foo",
-                        called = false;
+                c.subscribe(topic, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(topic, function(spy){
-                        should.equal(data, spy);
-                        if (called) done();
-                        else called = true;
-                    });
-
+                it("should invoke callback twice with correct data", function(){
                     c.publish(topic, data);
                     c.publish(topic, data);
+
+                    should.equal(data, spy);
+                    should.equal(called, 2);
                 });
 
             });
 
             describe("pattern with non greedy wildcard (partial)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic1 = "test.hello",
+                    topic2 = "test.world",
+                    pattern = "test.*",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback twice with correct data", function(done){
-                    var topic1 = "test.hello",
-                        topic2 = "test.world",
-                        pattern = "test.*",
-                        data = "foo",
-                        called = false;
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        if (called) done();
-                        else called = true;
-                    });
-
+                it("should invoke callback twice with correct data", function(){
                     c.publish(topic1, data);
                     c.publish(topic2, data);
+
+                    should.equal(data, spy);
+                    should.equal(called, 2);
                 });
 
             });
 
             describe("pattern with non greedy wildcard (full)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic1 = "hello",
+                    topic2 = "world",
+                    pattern = "*",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback twice with correct data", function(done){
-                    var topic1 = "hello",
-                        topic2 = "world",
-                        pattern = "*",
-                        data = "foo",
-                        called = false;
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        if (called) done();
-                        else called = true;
-                    });
-
+                it("should invoke callback twice with correct data", function(){
                     c.publish(topic1, data);
                     c.publish(topic2, data);
+
+                    should.equal(data, spy);
+                    should.equal(called, 2);
                 });
 
             });
 
             describe("pattern with greedy wildcard (partial)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic1 = "test.hello.world",
+                    topic2 = "test.world.hello",
+                    pattern = "test.#",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback twice with correct data", function(done){
-                    var topic1 = "test.hello.world",
-                        topic2 = "test.world.hello",
-                        pattern = "test.#",
-                        data = "foo",
-                        called = false;
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        if (called) done();
-                        else called = true;
-                    });
-
+                it("should invoke callback twice with correct data", function(){
                     c.publish(topic1, data);
                     c.publish(topic2, data);
+
+                    should.equal(data, spy);
+                    should.equal(called, 2);
                 });
 
             });
 
             describe("pattern with greedy wildcard (full)", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic1 = "test.hello.world",
+                    topic2 = "test.world.hello",
+                    pattern = "#",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback twice with correct data", function(done){
-                    var topic1 = "test.hello.world",
-                        topic2 = "test.world.hello",
-                        pattern = "#",
-                        data = "foo",
-                        called = false;
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        if (called) done();
-                        else called = true;
-                    });
-
+                it("should invoke callback twice with correct data", function(){
                     c.publish(topic1, data);
                     c.publish(topic2, data);
+
+                    should.equal(data, spy);
+                    should.equal(called, 2);
                 });
 
             });
 
             describe("pattern with mixed wildcards", function(){
 
-                var c = new Channel();
+                var c = new Channel(),
+                    topic1 = "test.hello.world.nice.to.meet.you",
+                    topic2 = "test.hello.world.nice.to.see.you",
+                    pattern = "test.*.world.*.to.#",
+                    data = "foo",
+                    spy,
+                    called = 0;
 
-                it("should invoke callback twice with correct data", function(done){
-                    var topic1 = "test.hello.world.nice.to.meet.you",
-                        topic2 = "test.hello.world.nice.to.see.you",
-                        pattern = "test.*.world.*.to.#",
-                        data = "foo",
-                        called = false;
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
 
-                    c.subscribe(pattern, function(spy){
-                        should.equal(data, spy);
-                        if (called) done();
-                        else called = true;
-                    });
+                c.publish(topic1, data);
+                c.publish(topic2, data);
 
-                    c.publish(topic1, data);
-                    c.publish(topic2, data);
+                it("should invoke callback twice with correct data", function(){
+                    should.equal(data, spy);
+                    should.equal(called, 2);
                 });
 
             });
@@ -294,60 +327,68 @@ describe("Channels", function(){
 
         describe("single publication", function(){
 
-            var c = new Channel();
+            var c = new Channel(),
+                topic = "test.hello.world.nice.to.meet.you",
+                pattern1 = "*.hello.#",
+                pattern2 = "test.*.world.nice.to.#",
+                data = "foo",
+                spy1,
+                spy2,
+                s1Called = 0,
+                s2Called = 0;
 
-            it("should invoke each callback once with correct data", function(done){
-                var topic = "test.hello.world.nice.to.meet.you",
-                    pattern1 = "*.hello.#",
-                    pattern2 = "test.*.world.nice.to.#",
-                    data = "foo",
-                    s1Called = false,
-                    s2Called = false;
+            c.subscribe(pattern1, function(spy){
+                spy1 = spy;
+                s1Called++;
+            });
 
-                c.subscribe(pattern1, function(spy){
-                    should.equal(data, spy);
-                    s1Called = true;
-                    if (s2Called) done();
-                });
+            c.subscribe(pattern2, function(spy){
+                spy2 = spy;
+                s2Called++;
+            });
 
-                c.subscribe(pattern2, function(spy){
-                    should.equal(data, spy);
-                    s2Called = true;
-                    if (s1Called) done();
-                });
-
+            it("should invoke each callback once with correct data", function(){
                 c.publish(topic, data);
+
+                should.equal(data, spy1);
+                should.equal(data, spy2);
+                should.equal(s1Called, 1);
+                should.equal(s2Called, 1);
             });
 
         });
 
         describe("multiple publications", function(){
 
-            var c = new Channel();
+            var c = new Channel(),
+                topic1 = "test.hello.world.nice.to.meet.you",
+                topic2 = "test.hello.world.nice.to.see.you",
+                pattern1 = "*.hello.#",
+                pattern2 = "test.*.world.nice.to.#",
+                data = "foo",
+                spy1,
+                spy2,
+                s1Called = 0,
+                s2Called = 0;
 
-            it("should invoke each callback twice with correct data", function(done){
-                var topic1 = "test.hello.world.nice.to.meet.you",
-                    topic2 = "test.hello.world.nice.to.see.you",
-                    pattern1 = "*.hello.#",
-                    pattern2 = "test.*.world.nice.to.#",
-                    data = "foo",
-                    s1Called = 0,
-                    s2Called = 0;
+            c.subscribe(pattern1, function(spy){
+                spy1 = spy;
+                s1Called++;
+            });
 
-                c.subscribe(pattern1, function(spy){
-                    should.equal(data, spy);
-                    s1Called++;
-                    if (s1Called === 2 && s2Called === 2) done();
-                });
+            c.subscribe(pattern2, function(spy){
+                spy2 = spy;
+                s2Called++;
+            });
 
-                c.subscribe(pattern2, function(spy){
-                    should.equal(data, spy);
-                    s2Called++;
-                    if (s1Called === 2 && s2Called === 2) done();
-                });
-
+            it("should invoke each callback twice with correct data", function(){
                 c.publish(topic1, data);
                 c.publish(topic2, data);
+
+                should.equal(data, spy1);
+                should.equal(data, spy2);
+                should.equal(s1Called, 2);
+                should.equal(s2Called, 2);
             });
 
         });
