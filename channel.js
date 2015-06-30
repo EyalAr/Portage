@@ -17,8 +17,6 @@ Channel.prototype.subscribe = function(topic, cb){
     if (!_.isFunction(cb)) throw Error("callback must be a function");
     if (!topic.length) throw Error("topic must contain at least one section");
     if (!topic.every(_.isString)) throw Error("all topic sections must be strings");
-    if (topic.slice(0, -1).some(isGreedyWildcard.bind(this)))
-        throw Error("greedy wildcard must be the last section");
 
     var topicDef, i,
         classifier = topic[0];
@@ -102,7 +100,10 @@ function gatherSubscriptions(topic, topicsDefs, wildcard, greedyWildcard){
                     _push(
                         subs,
                         gatherDeepSubscriptions(
-                            topicsDefs.subtopics[subtopic]
+                            rest,
+                            topicsDefs.subtopics[subtopic],
+                            wildcard,
+                            greedyWildcard
                         )
                     );
                 } else if (subtopic === classifier || subtopic === wildcard){
@@ -123,14 +124,30 @@ function gatherSubscriptions(topic, topicsDefs, wildcard, greedyWildcard){
     return subs;
 }
 
-function gatherDeepSubscriptions(topicsDefs){
+function gatherDeepSubscriptions(rest, topicsDefs, wildcard, greedyWildcard){
     var subtopic, subs = [];
 
     _push(subs, topicsDefs.direct);
 
     for (subtopic in topicsDefs.subtopics){
         if (topicsDefs.subtopics.hasOwnProperty(subtopic)){
-            _push(subs, gatherDeepSubscriptions(topicsDefs[subtopic]));
+            var i = subtopic === greedyWildcard ? 0 : _.lastIndexOf(rest, subtopic);
+            if (i !== -1){
+                var def = {
+                    direct: [],
+                    subtopics: {}
+                };
+                def.subtopics[subtopic] = topicsDefs.subtopics[subtopic];
+                _push(
+                    subs,
+                    gatherSubscriptions(
+                        rest.slice(i),
+                        def,
+                        wildcard,
+                        greedyWildcard
+                    )
+                );
+            }
         }
     }
 

@@ -11,9 +11,10 @@ module.exports = new Test(
             i;
 
         for (i = 0 ; i < N ; i++){
-            var s1 = Math.random() < 0.5 ? "topic.*" : "*.hello",
-                s2 = Math.random() < 0.5 ? "world.*" : "*.foo";
-            c.subscribe(s1 + "." + s2 + "." + i, function(){
+            var s1 = Math.random() < 0.5 ? "topic.#" : "*.hello",
+                s2 = Math.random() < 0.5 ? "world.*" : "#.foo",
+                pattern = s1 + "." + s2 + "." + i;
+            c.subscribe(pattern, function(){
                 n++;
                 if (n === N - 1) done(null, Date.now() - start);
             });

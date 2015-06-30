@@ -26,15 +26,6 @@ describe("Channels", function(){
             c.subscribe.bind(c, /topic/, function(){}).should.throw();
         });
 
-        it("should throw an exception if greedy wildcard is not at the end", function(){
-            c.subscribe.bind(c, "#.hello", function(){}).should.throw();
-            c.subscribe.bind(c, "topic.#.hello", function(){}).should.throw();
-        });
-
-        it("should not throw an exception if greedy wildcard is at the end", function(){
-            c.subscribe.bind(c, "world.#", function(){}).should.not.throw();
-        });
-
     });
 
     describe("publish arguments", function(){
@@ -156,11 +147,151 @@ describe("Channels", function(){
 
             });
 
-            describe("pattern with greedy wildcard (partial)", function(){
+            describe("pattern with greedy wildcard (at the end)", function(){
+
+                var c = new Channel(),
+                    topic1 = "test.hello.world",
+                    topic2 = "test.hello.world.foo",
+                    topic3 = "test.world",
+                    topic4 = "mo-match", // should not match
+                    pattern = "test.#",
+                    data = "foo",
+                    spy,
+                    called = 0;
+
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
+
+                it("should invoke callback 3 times with correct data", function(){
+                    c.publish(topic1, data);
+                    c.publish(topic2, data);
+                    c.publish(topic3, data);
+                    c.publish(topic4, data);
+                    should.equal(data, spy);
+                    should.equal(called, 3);
+                });
+
+            });
+
+            describe("pattern with greedy wildcard (at the middle)", function(){
+
+                var c = new Channel(),
+                    topic1 = "test.hello.world.foo.foo.bar",
+                    topic2 = "test.hello.world.foo.bar",
+                    topic3 = "test.world.foo.bar",
+                    topic4 = "test.world", // should not match
+                    pattern = "test.#.foo.bar",
+                    data = "foo",
+                    spy,
+                    called = 0;
+
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
+
+                it("should invoke callback 3 times with correct data", function(){
+                    c.publish(topic1, data);
+                    c.publish(topic2, data);
+                    c.publish(topic3, data);
+                    c.publish(topic4, data);
+                    should.equal(data, spy);
+                    should.equal(called, 3);
+                });
+
+            });
+
+            describe("pattern with greedy wildcard (at the start)", function(){
+
+                var c = new Channel(),
+                    topic1 = "test.hello.world.foo.foo.bar",
+                    topic2 = "test.hello.world.foo.bar",
+                    topic3 = "test.world.foo.bar",
+                    topic4 = "world.test", // should not match
+                    pattern = "#.foo.bar",
+                    data = "foo",
+                    spy,
+                    called = 0;
+
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
+
+                it("should invoke callback 3 times with correct data", function(){
+                    c.publish(topic1, data);
+                    c.publish(topic2, data);
+                    c.publish(topic3, data);
+                    c.publish(topic4, data);
+                    should.equal(data, spy);
+                    should.equal(called, 3);
+                });
+
+            });
+
+            describe("pattern with greedy wildcard (multiple)", function(){
+
+                var c = new Channel(),
+                    topic1 = "test.hello.world.bar.foo.foo.boo.baz",
+                    topic2 = "test.hello.world.bar.foo.boo.baz",
+                    topic3 = "test.world.bar.foo.baz",
+                    topic4 = "world.test.foo", // should not match
+                    pattern = "test.#.bar.#.baz",
+                    data = "foo",
+                    spy,
+                    called = 0;
+
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
+
+                it("should invoke callback 3 times with correct data", function(){
+                    c.publish(topic1, data);
+                    c.publish(topic2, data);
+                    c.publish(topic3, data);
+                    c.publish(topic4, data);
+                    should.equal(data, spy);
+                    should.equal(called, 3);
+                });
+
+            });
+
+            describe("pattern with greedy wildcard (multiple, consecutive)", function(){
+
+                var c = new Channel(),
+                    topic1 = "test.hello.world.bar.foo.foo.boo.baz.bar",
+                    topic2 = "test.hello.world.bar.foo.boo.baz.bar",
+                    topic3 = "test.world.bar.baz.bar",
+                    topic4 = "world.test.foo", // should not match
+                    pattern = "test.#.#.baz.bar",
+                    data = "foo",
+                    spy,
+                    called = 0;
+
+                c.subscribe(pattern, function(_spy){
+                    spy = _spy;
+                    called++;
+                });
+
+                it("should invoke callback 3 times with correct data", function(){
+                    c.publish(topic1, data);
+                    c.publish(topic2, data);
+                    c.publish(topic3, data);
+                    c.publish(topic4, data);
+                    should.equal(data, spy);
+                    should.equal(called, 3);
+                });
+
+            });
+
+            describe("pattern with greedy wildcard (full)", function(){
 
                 var c = new Channel(),
                     topic = "test.hello.world",
-                    pattern = "test.#",
+                    pattern = "#",
                     data = "foo",
                     spy,
                     called = 0;
@@ -178,11 +309,11 @@ describe("Channels", function(){
 
             });
 
-            describe("pattern with greedy wildcard (full)", function(){
+            describe("pattern with greedy wildcard (full, multiple)", function(){
 
                 var c = new Channel(),
                     topic = "test.hello.world",
-                    pattern = "#",
+                    pattern = "#.#",
                     data = "foo",
                     spy,
                     called = 0;

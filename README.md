@@ -76,10 +76,12 @@ cards of 2 types:
 
 - `'*'`: Non greedy wild card. Will match any one section. For example,
   `'chat.*.server'` will match both `'chat.new-message.server'` and
-  `'chat.remove-message.server'`, **but not** `'chat.new-message.local'`.
+  `'chat.remove-message.server'`, **but not** `'chat.new-message.local'` and
+  not `'chat.new.message.local'`.
 
-- `'#'`: Greedy wild card. Must be the last section in the pattern.
-  Will match one or more sections at the end of the topic. For example,
+- `'#'`: Greedy wild card. Will match one or more sections. For example,
   `'chat.#'` will match `'chat.new-message.server'`,
   `'chat.remove-message.server'` **and** `'chat.new-message.local'`. Basically
-  it will match any topic that begins with `'chat.'`.
+  it will match any topic that begins with `'chat.'`. `'chat.#.local'` will
+  match any topic that begins with `'chat'` and ends with `'local'`. `'#.local'`
+  will match any topic that ends with `'local'`.
