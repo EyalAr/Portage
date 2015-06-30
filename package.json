@@ -1,6 +1,6 @@
 {
   "name": "portage",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Pub/Sub for JS",
   "main": "index.js",
   "directories": {
