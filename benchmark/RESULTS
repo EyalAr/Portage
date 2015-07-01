@@ -1,0 +1,34 @@
+N=1000
+
+Many pattern subscriptions, many publications...
+Postal:      6056 ms
+Portage:     273 ms
+Portage is 5783 ms faster (95.49%)
+
+Many pattern subscriptions, 1 publication...
+Postal:      410 ms
+Portage:     2 ms
+Portage is 408 ms faster (99.51%)
+
+Many specific subscriptions, many publication...
+Postal:      6001 ms
+Portage:     188 ms
+Portage is 5813 ms faster (96.87%)
+
+Many specific subscriptions, 1 publication...
+Postal:      1643 ms
+Portage:     3 ms
+Portage is 1640 ms faster (99.82%)
+
+One pattern subscriptions, many publications...
+Postal:      10 ms
+Portage:     13 ms
+Postal is 3 ms faster (23.08%)
+
+One specific subscription, many publications...
+Postal:      7 ms
+Portage:     12 ms
+Postal is 5 ms faster (41.67%)
+
+Portage is faster at 4/6 tests
+Postal is faster at 2/6 tests

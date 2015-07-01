@@ -1,5 +1,5 @@
-var should = require("should"),
-    Channel = require("../channel");
+import should from "should";
+import Channel from "../src/Channel";
 
 describe("subscriptions control", function(){
 

@@ -94,3 +94,10 @@ cards of 2 types:
   it will match any topic that begins with `'chat.'`. `'chat.#.local'` will
   match any topic that begins with `'chat'` and ends with `'local'`. `'#.local'`
   will match any topic that ends with `'local'`.
+
+## Benchmark
+
+Benchmark against [Postal](https://github.com/postaljs/postal.js) is available
+at the `benchmark/` folder.
+
+To run: `npm run benchmark`

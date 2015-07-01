@@ -2,7 +2,7 @@
   "name": "portage",
   "version": "0.0.1",
   "description": "Pub/Sub for JS",
-  "main": "index.js",
+  "main": "portage.js",
   "directories": {
     "test": "tests"
   },
@@ -10,11 +10,18 @@
     "lodash": "^3.9.3"
   },
   "devDependencies": {
+    "async": "^1.3.0",
+    "babel": "^5.6.14",
+    "jshint": "^2.8.0",
     "mocha": "^2.2.5",
+    "postal": "^1.0.6",
     "should": "^7.0.1"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --opts tests/mocha.opts tests"
+    "test": "./node_modules/.bin/mocha --opts tests/mocha.opts tests",
+    "build": "./node_modules/.bin/babel --modules umd src/ --out-dir ./ --source-maps inline",
+    "benchmark": "./node_modules/.bin/babel-node benchmark/index.js",
+    "lint": "./node_modules/.bin/jshint lib/**.js"
   },
   "repository": {
     "type": "git",
