@@ -46,17 +46,16 @@ Channel.prototype.publish = function(topic){
     if (!_.isArray(topic)) throw Error("topic must be an array or a string");
     if (!topic.length) throw Error("topic must contain at least one section");
     if (!topic.every(_.isString)) throw Error("all topic sections must be strings");
-    if (topic.some(isWildcard.bind(this)) || topic.some(isGreedyWildcard.bind(this)))
+    if (topic.some(isAnyWildcard.bind(this)))
         throw Error("topic section cannot be a wildcard");
 
-    var subs = gatherSubscriptions(
+    var subs = gatherSubscriptions.call(
+            this,
             topic,
             {
                 direct: [],
                 subtopics: this._topicsDefs
-            },
-            this._wildcard,
-            this._greedyWildcard
+            }
         ),
         data = Array.prototype.slice.call(arguments, 1);
 
@@ -75,11 +74,17 @@ function isGreedyWildcard(s){
     return s === this._greedyWildcard;
 }
 
-function gatherSubscriptions(topic, topicsDefs, wildcard, greedyWildcard){
+function isAnyWildcard(s){
+    return isWildcard.call(this, s) || isGreedyWildcard.call(this, s);
+}
+
+function gatherSubscriptions(topic, topicsDefs){
     var subtopic,
         classifier = topic[0],
         rest = topic.slice(1),
-        subs = [];
+        subs = [],
+        wildcard = this._wildcard,
+        greedyWildcard = this._greedyWildcard;
 
     if (!rest.length){
         for (subtopic in topicsDefs.subtopics){
@@ -99,21 +104,19 @@ function gatherSubscriptions(topic, topicsDefs, wildcard, greedyWildcard){
                 if (subtopic === greedyWildcard){
                     _push(
                         subs,
-                        gatherDeepSubscriptions(
+                        gatherDeepSubscriptions.call(
+                            this,
                             rest,
-                            topicsDefs.subtopics[subtopic],
-                            wildcard,
-                            greedyWildcard
+                            topicsDefs.subtopics[subtopic]
                         )
                     );
                 } else if (subtopic === classifier || subtopic === wildcard){
                     _push(
                         subs,
-                        gatherSubscriptions(
+                        gatherSubscriptions.call(
+                            this,
                             rest,
-                            topicsDefs.subtopics[subtopic],
-                            wildcard,
-                            greedyWildcard
+                            topicsDefs.subtopics[subtopic]
                         )
                     );
                 }
@@ -124,8 +127,11 @@ function gatherSubscriptions(topic, topicsDefs, wildcard, greedyWildcard){
     return subs;
 }
 
-function gatherDeepSubscriptions(rest, topicsDefs, wildcard, greedyWildcard){
-    var subtopic, subs = [];
+function gatherDeepSubscriptions(rest, topicsDefs){
+    var subtopic,
+        subs = [],
+        wildcard = this._wildcard,
+        greedyWildcard = this._greedyWildcard;
 
     _push(subs, topicsDefs.direct);
 
@@ -140,11 +146,10 @@ function gatherDeepSubscriptions(rest, topicsDefs, wildcard, greedyWildcard){
                 def.subtopics[subtopic] = topicsDefs.subtopics[subtopic];
                 _push(
                     subs,
-                    gatherSubscriptions(
+                    gatherSubscriptions.call(
+                        this,
                         rest.slice(i),
-                        def,
-                        wildcard,
-                        greedyWildcard
+                        def
                     )
                 );
             }
