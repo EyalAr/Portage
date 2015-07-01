@@ -64,11 +64,12 @@ returned. Otherwise the existing channel with that name is returned.
    arguments.
 
 **Return value** is an object with the following methods:
-    - `s.unsubscribe()`: removes this subscription
-    - `s.once()`: limits invocation of this subscription to one additional time,
-      after which it is automatically removed.
-    - `s.limit(n)`: limits invocation of this subscription to `n` additional
-      times, after which it is automatically removed.
+
+- `s.unsubscribe()`: removes this subscription
+- `s.once()`: limits invocation of this subscription to one additional time,
+  after which it is automatically removed.
+- `s.limit(n)`: limits invocation of this subscription to `n` additional
+  times, after which it is automatically removed.
 
 **Note:** If `s.limit(3)` is called after the subscription was already called 5
 times, it will be called up to 3 more times; up to a total of 8 times.
