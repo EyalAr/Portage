@@ -63,7 +63,15 @@ returned. Otherwise the existing channel with that name is returned.
    whose topic matches the pattern. The function is called with the published
    arguments.
 
-**Return value** is an object with an `unsubscribe` method: `s.unsubscribe()`.
+**Return value** is an object with the following methods:
+    - `s.unsubscribe()`: removes this subscription
+    - `s.once()`: limits invocation of this subscription to one additional time,
+      after which it is automatically removed.
+    - `s.limit(n)`: limits invocation of this subscription to `n` additional
+      times, after which it is automatically removed.
+
+**Note:** If `s.limit(3)` is called after the subscription was already called 5
+times, it will be called up to 3 more times; up to a total of 8 times.
 
 ### Topics structure
 
