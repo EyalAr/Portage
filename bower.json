@@ -1,0 +1,35 @@
+{
+  "name": "portage",
+  "version": "0.0.1",
+  "homepage": "https://github.com/EyalAr/Portage",
+  "authors": [
+    "Eyal Arubas <eyalarubas@gmail.com>"
+  ],
+  "description": "Fast pub/sub for JS",
+  "main": "dist/portage.js",
+  "moduleType": [
+    "amd",
+    "es6",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "pub",
+    "sub",
+    "publish",
+    "subscribe",
+    "hub",
+    "channel"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fuzzytree": "~0.0.3"
+  }
+}

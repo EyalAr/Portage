@@ -1,7 +1,7 @@
 {
   "name": "portage",
   "version": "0.0.1",
-  "description": "Pub/Sub for JS",
+  "description": "Fast pub/sub for JS",
   "main": "dist/portage.js",
   "directories": {
     "test": "tests"
