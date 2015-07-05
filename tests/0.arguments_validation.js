@@ -1,5 +1,5 @@
 import should from "should";
-import Channel from "../src/Channel";
+import portage from "../src/portage";
 
 describe("arguments validation", function(){
 
@@ -7,7 +7,7 @@ describe("arguments validation", function(){
 
         describe("subscribe", function(){
 
-            var c = new Channel();
+            var c = new portage.Channel();
 
             it("should not throw an exception if pattern is string or array and callback is function", function(){
                 c.subscribe.bind(c, "topic", function(){}).should.not.throw();
@@ -32,7 +32,7 @@ describe("arguments validation", function(){
 
         describe("publish", function(){
 
-            var c = new Channel();
+            var c = new portage.Channel();
 
             it("should not throw an exception if topic is string or array", function(){
                 c.publish.bind(c, "topic.hello").should.not.throw();
@@ -61,7 +61,7 @@ describe("arguments validation", function(){
 
         describe("limit", function(){
 
-            var c = new Channel(),
+            var c = new portage.Channel(),
                 s = c.subscribe("topic", function(){});
 
             it("should not throw an exception if limit >= 0", function(){

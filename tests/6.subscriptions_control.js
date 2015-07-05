@@ -1,11 +1,11 @@
 import should from "should";
-import Channel from "../src/Channel";
+import portage from "../src/portage";
 
 describe("subscriptions control", function(){
 
     describe("unsubscribe", function(){
 
-        var c = new Channel(),
+        var c = new portage.Channel(),
             count = 0;
 
         var s1 = c.subscribe("test.hello.world", function(){
@@ -41,7 +41,7 @@ describe("subscriptions control", function(){
 
             describe("before first publication", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     count = 0;
 
                 c.subscribe("test.hello.world", function(){
@@ -61,7 +61,7 @@ describe("subscriptions control", function(){
 
             describe("after first publication", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     count = 0;
 
                 var s = c.subscribe("test.hello.world", function(){
@@ -89,7 +89,7 @@ describe("subscriptions control", function(){
 
             describe("before first publication", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     count = 0;
 
                 c.subscribe("test.hello.world", function(){
@@ -109,7 +109,7 @@ describe("subscriptions control", function(){
 
             describe("after first publication", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     count = 0;
 
                 var s = c.subscribe("test.hello.world", function(){
@@ -137,7 +137,7 @@ describe("subscriptions control", function(){
 
     describe("once", function(){
 
-        var c = new Channel(),
+        var c = new portage.Channel(),
             count = 0;
 
         c.subscribe("test.hello.world", function(){

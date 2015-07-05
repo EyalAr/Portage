@@ -1,5 +1,5 @@
 import should from "should";
-import Channel from "../src/Channel";
+import portage from "../src/portage";
 
 describe("simple specific topics", function(){
 
@@ -9,7 +9,7 @@ describe("simple specific topics", function(){
 
             describe("specific topic with one section", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic = "test",
                     data = "foo",
                     spy,
@@ -31,7 +31,7 @@ describe("simple specific topics", function(){
 
             describe("specific topic with multiple sections", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic = "test.hello",
                     data = "foo",
                     spy,
@@ -56,7 +56,7 @@ describe("simple specific topics", function(){
 
             describe("specific topic", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic = "test.hello",
                     data = "foo",
                     spy,

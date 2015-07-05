@@ -1,5 +1,5 @@
 import should from "should";
-import Channel from "../src/Channel";
+import portage from "../src/portage";
 
 describe("simple pattern topics", function(){
 
@@ -9,7 +9,7 @@ describe("simple pattern topics", function(){
 
             describe("pattern with non greedy wildcard (partial)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic = "test.hello",
                     pattern = "test.*",
                     data = "foo",
@@ -31,7 +31,7 @@ describe("simple pattern topics", function(){
 
             describe("pattern with non greedy wildcard (full)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topicOk = "test",
                     topicNotOk = "test.hello",
                     pattern = "*",
@@ -59,7 +59,7 @@ describe("simple pattern topics", function(){
 
             describe("pattern with non greedy wildcard (partial)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello",
                     topic2 = "test.world",
                     pattern = "test.*",
@@ -84,7 +84,7 @@ describe("simple pattern topics", function(){
 
             describe("pattern with non greedy wildcard (full)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "hello",
                     topic2 = "world",
                     pattern = "*",

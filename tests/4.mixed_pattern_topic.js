@@ -1,5 +1,5 @@
 import should from "should";
-import Channel from "../src/Channel";
+import portage from "../src/portage";
 
 describe("mixed pattern topics", function(){
 
@@ -9,7 +9,7 @@ describe("mixed pattern topics", function(){
 
             describe("pattern with mixed wildcards", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic = "test.hello.world.nice.to.meet.you",
                     patternOk = "test.*.world.*.to.#",
                     patternNotOk = "test.*.world.to.#",
@@ -39,7 +39,7 @@ describe("mixed pattern topics", function(){
 
             describe("pattern with mixed wildcards", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world.nice.to.meet.you",
                     topic2 = "test.hello.world.nice.to.see.you",
                     pattern = "test.*.world.*.to.#",

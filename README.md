@@ -18,7 +18,7 @@ created on the fly) by a key.
 ## Hub API
 
 ```
-var Hub = require('portage/hub');
+var Hub = require('portage').Hub;
 var myHub = new Hub();
 ```
 
@@ -40,7 +40,7 @@ returned. Otherwise the existing channel with that name is returned.
 
 ## Channel API
 
-`var Channel = require('portage/channel')`
+`var Channel = require('portage').Channel`
 
 ### Create a channel
 

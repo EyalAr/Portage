@@ -1,11 +1,11 @@
 import should from "should";
-import Channel from "../src/Channel";
+import portage from "../src/portage";
 
 describe("multiple subscriptions", function(){
 
     describe("single publication", function(){
 
-        var c = new Channel(),
+        var c = new portage.Channel(),
             topic = "test.hello.world.nice.to.meet.you",
             pattern1 = "*.hello.#",
             pattern2 = "test.*.world.nice.to.#",
@@ -38,7 +38,7 @@ describe("multiple subscriptions", function(){
 
     describe("multiple publications", function(){
 
-        var c = new Channel(),
+        var c = new portage.Channel(),
             topic1 = "test.hello.world.nice.to.meet.you",
             topic2 = "test.hello.world.nice.to.see.you",
             pattern1 = "*.hello.#",

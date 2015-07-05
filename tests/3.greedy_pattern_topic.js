@@ -1,5 +1,5 @@
 import should from "should";
-import Channel from "../src/Channel";
+import portage from "../src/portage";
 
 describe("greedy pattern topics", function(){
 
@@ -9,7 +9,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (at the end)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world",
                     topic2 = "test.hello.world.foo",
                     topic3 = "test.world",
@@ -37,7 +37,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (at the middle)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world.foo.foo.bar",
                     topic2 = "test.hello.world.foo.bar",
                     topic3 = "test.world.foo.bar",
@@ -65,7 +65,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (at the start)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world.foo.foo.bar",
                     topic2 = "test.hello.world.foo.bar",
                     topic3 = "test.world.foo.bar",
@@ -93,7 +93,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (multiple)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world.bar.foo.foo.boo.baz",
                     topic2 = "test.hello.world.bar.foo.boo.baz",
                     topic3 = "test.world.bar.foo.baz",
@@ -121,7 +121,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (multiple, consecutive)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world.bar.foo.foo.boo.baz.bar",
                     topic2 = "test.hello.world.bar.foo.boo.baz.bar",
                     topic3 = "test.world.bar.baz.bar",
@@ -149,7 +149,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (full)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic = "test.hello.world",
                     pattern = "#",
                     data = "foo",
@@ -171,7 +171,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (full, multiple)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic = "test.hello.world",
                     pattern = "#.#",
                     data = "foo",
@@ -197,7 +197,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (partial)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world",
                     topic2 = "test.world.hello",
                     pattern = "test.#",
@@ -222,7 +222,7 @@ describe("greedy pattern topics", function(){
 
             describe("pattern with greedy wildcard (full)", function(){
 
-                var c = new Channel(),
+                var c = new portage.Channel(),
                     topic1 = "test.hello.world",
                     topic2 = "test.world.hello",
                     pattern = "#",
