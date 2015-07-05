@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "fuzzytree": "0.0.3",
     "lodash": "^3.9.3"
   },
   "devDependencies": {
@@ -21,7 +22,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --opts tests/mocha.opts tests",
-    "build": "./node_modules/.bin/browserify src/portage.js -t babelify -s portage -u lodash -d -o dist/portage.js",
+    "build": "./node_modules/.bin/browserify src/portage.js -t babelify -s portage -u lodash -u fuzzytree -d -o dist/portage.js",
     "benchmark": "./node_modules/.bin/babel-node benchmark/index.js",
     "lint": "./node_modules/.bin/jshint src/**.js"
   },
