@@ -1,6 +1,6 @@
 # Portage
 
-JS pub/sub
+Fast pub/sub for JS
 
 `npm install portage`
 
@@ -8,16 +8,22 @@ JS pub/sub
 
 ## Intro
 
-Channels are used to publish messages on certain topics, and to subscribe
-to messages on certain topics.
+Portage is utilizing a tree structure to quickly match publications with
+subscriptions; including support for subscriptions with wildcards (see below).
+
+Publications and subscriptions are segmentized by channels. Channels are used to
+publish messages on certain topics, and to subscribe to messages on certain
+topics (or a pattern of topics).
+
+A channel internally maintains a tree structure of subscriptions.
 
 Topics are organized in a hierarchical manner. For example, `chat.new-message`
 is a sub-topic of `chat`. This mostly affects the way the library efficiently
 filters subscription handlers when a message is published, but also relates
-to the usage of wild cards in subscriptions (see below).
+to the usage of wildcards in subscriptions (see below).
 
 Hubs are simply an aggregation of channels, which can easily be accessed (and
-created on the fly) by a key.
+created on the fly) with a key.
 
 ## Hub API
 
@@ -103,5 +109,7 @@ cards of 2 types:
 
 Benchmark against [Postal](https://github.com/postaljs/postal.js) is available
 at the `benchmark/` folder.
+
+Results have shown Portage to be more than 90% faster than Postal.
 
 To run: `npm run benchmark`
