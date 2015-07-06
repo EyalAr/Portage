@@ -105,8 +105,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _lodash = __webpack_require__(2);
 	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
 	var _fuzzytree = __webpack_require__(3);
 	
 	var _fuzzytree2 = _interopRequireDefault(_fuzzytree);
@@ -125,7 +123,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _createClass(Channel, [{
 	        key: 'subscribe',
 	        value: function subscribe(topic, cb) {
-	            if (!_lodash2['default'].isFunction(cb)) throw Error('callback must be a function');
+	            if (!(0, _lodash.isFunction)(cb)) throw Error('callback must be a function');
 	
 	            var node = this._tree.find(topic);
 	            if (!node) {
@@ -143,11 +141,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	                data[_key - 1] = arguments[_key];
 	            }
 	
-	            var nodes = this._tree.match(topic);
-	            nodes.reduce(function (cbs, node) {
-	                _push(cbs, node.getData());
-	                return cbs;
-	            }, []).forEach(function (s) {
+	            var nodes = this._tree.match(topic),
+	                subs = (0, _lodash.reduce)(nodes, function (subs, node) {
+	                (0, _lodash.forEach)(node.getData(), function (s) {
+	                    return subs.push(s);
+	                });
+	                return subs;
+	            }, []);
+	            (0, _lodash.forEach)(subs, function (s) {
 	                return s.invoke(data);
 	            });
 	        }
@@ -155,11 +156,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    return Channel;
 	})();
-	
-	function _push(target, elements) {
-	    var i;
-	    for (i = 0; i < elements.length; i++) target.push(elements[i]);
-	}
 	
 	exports['default'] = Channel;
 	module.exports = exports['default'];
@@ -190,13 +186,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var _lodash = __webpack_require__(2);
-	
-	var _lodash2 = _interopRequireDefault(_lodash);
 	
 	var Subscription = (function () {
 	    function Subscription(cb, container) {
@@ -224,7 +216,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: "limit",
 	        value: function limit(n) {
-	            if (!(_lodash2["default"].isNumber(n) && !_lodash2["default"].isNaN(n) && _lodash2["default"].gte(n, 0))) throw Error("limit must be a number greater or equal to 0");
+	            if (!((0, _lodash.isNumber)(n) && !(0, _lodash.isNaN)(n) && (0, _lodash.gte)(n, 0))) throw Error("limit must be a number greater or equal to 0");
 	            this._limit = this._called + n;
 	            this._purge();
 	            return this;
@@ -237,7 +229,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: "unsubscribe",
 	        value: function unsubscribe() {
-	            var i = this._container.indexOf(this);
+	            var i = (0, _lodash.indexOf)(this._container, this);
 	            if (i !== -1) this._container.splice(i, 1);
 	        }
 	    }]);
@@ -268,8 +260,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _lodash = __webpack_require__(2);
 	
-	var _lodash2 = _interopRequireDefault(_lodash);
-	
 	var _Channel = __webpack_require__(1);
 	
 	var _Channel2 = _interopRequireDefault(_Channel);
@@ -284,7 +274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _createClass(Hub, [{
 	        key: 'channel',
 	        value: function channel(name) {
-	            if (!_lodash2['default'].isString(name)) throw Error('channel name must be a string');
+	            if (!(0, _lodash.isString)(name)) throw Error('channel name must be a string');
 	            return this._channels[name] = this._channels[name] || new _Channel2['default']();
 	        }
 	    }]);

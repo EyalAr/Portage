@@ -1,6 +1,10 @@
 /* jshint esnext:true */
 
-import _ from 'lodash';
+import {
+    isFunction as _isFunction,
+    forEach as _forEach,
+    reduce as _reduce
+} from 'lodash';
 import FuzzyTree from 'fuzzytree';
 import Subscription from './Subscription';
 
@@ -10,7 +14,7 @@ class Channel{
     }
 
     subscribe(topic, cb){
-        if (!_.isFunction(cb)) throw Error("callback must be a function");
+        if (!_isFunction(cb)) throw Error("callback must be a function");
 
         var node = this._tree.find(topic);
         if (!node) {
@@ -23,17 +27,13 @@ class Channel{
     }
 
     publish(topic, ...data){
-        var nodes = this._tree.match(topic);
-        nodes.reduce((cbs, node) => {
-            _push(cbs, node.getData());
-            return cbs;
-        }, []).forEach(s => s.invoke(data));
+        var nodes = this._tree.match(topic),
+            subs = _reduce(nodes, (subs, node) => {
+                _forEach(node.getData(), s => subs.push(s));
+                return subs;
+            }, []);
+        _forEach(subs, s => s.invoke(data));
     }
-}
-
-function _push(target, elements){
-    var i;
-    for (i = 0 ; i < elements.length ; i++) target.push(elements[i]);
 }
 
 export default Channel;

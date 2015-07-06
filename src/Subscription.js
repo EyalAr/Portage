@@ -1,6 +1,11 @@
 /* jshint esnext:true */
 
-import _ from 'lodash';
+import {
+    isNumber as _isNumber,
+    isNaN as _isNaN,
+    gte as _gte,
+    indexOf as _indexOf
+} from 'lodash';
 
 class Subscription{
     constructor(cb, container){
@@ -23,7 +28,7 @@ class Subscription{
     }
 
     limit(n){
-        if (!(_.isNumber(n) && !_.isNaN(n) && _.gte(n, 0)))
+        if (!(_isNumber(n) && !_isNaN(n) && _gte(n, 0)))
             throw Error("limit must be a number greater or equal to 0");
         this._limit = this._called + n;
         this._purge();
@@ -35,7 +40,7 @@ class Subscription{
     }
 
     unsubscribe(){
-        var i = this._container.indexOf(this);
+        var i = _indexOf(this._container, this);
         if (i !== -1) this._container.splice(i, 1);
     }
 }

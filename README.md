@@ -9,8 +9,8 @@ Fast pub/sub for JS
 ## Intro
 
 Portage is utilizing a [tree structure](https://github.com/EyalAr/FuzzyTree) to
-quickly match publications with subscriptions; including support for
-subscriptions with wildcards (see below).
+[quickly](#benchmark) match publications with subscriptions; including support
+for subscriptions with wildcards (see below).
 
 Publications and subscriptions are segmentized by channels. Channels are used to
 publish messages on certain topics, and to subscribe to messages on certain
@@ -111,6 +111,11 @@ cards of 2 types:
 Benchmark against [Postal](https://github.com/postaljs/postal.js) is available
 at the `benchmark/` folder.
 
-Results have shown Portage to be more than 90% faster than Postal.
+Results have shown Portage to be more than **90% faster** than Postal.
 
-To run: `npm run benchmark`
+To run:
+
+```
+npm install
+npm run benchmark
+```
