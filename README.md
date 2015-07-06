@@ -8,8 +8,9 @@ Fast pub/sub for JS
 
 ## Intro
 
-Portage is utilizing a tree structure to quickly match publications with
-subscriptions; including support for subscriptions with wildcards (see below).
+Portage is utilizing a [tree structure](https://github.com/EyalAr/FuzzyTree) to
+quickly match publications with subscriptions; including support for
+subscriptions with wildcards (see below).
 
 Publications and subscriptions are segmentized by channels. Channels are used to
 publish messages on certain topics, and to subscribe to messages on certain
