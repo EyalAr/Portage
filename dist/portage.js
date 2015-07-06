@@ -118,6 +118,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _classCallCheck(this, Channel);
 	
 	        this._tree = new _fuzzytree2['default']();
+	        this._strategy = defaultStrategy;
 	    }
 	
 	    _createClass(Channel, [{
@@ -144,19 +145,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	                });
 	                return subs;
 	            }, []);
-	            (0, _lodash.forEach)(subs, function (s) {
-	                return s.invoke(data, {
-	                    topic: topic,
-	                    called: s._called,
-	                    limit: s._limit,
-	                    last: s._limit !== null && s._called === s._limit - 1
-	                });
-	            });
+	            return this._strategy(subs, data, topic);
 	        }
 	    }]);
 	
 	    return Channel;
 	})();
+	
+	function defaultStrategy(subs, data, topic) {
+	    (0, _lodash.forEach)(subs, function (s) {
+	        return s.invoke(data, {
+	            topic: topic,
+	            called: s._called,
+	            limit: s._limit,
+	            last: s._limit !== null && s._called === s._limit - 1
+	        });
+	    });
+	}
 	
 	exports['default'] = Channel;
 	module.exports = exports['default'];
