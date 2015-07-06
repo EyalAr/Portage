@@ -2,6 +2,10 @@
 
 JS pub/sub
 
+`npm install portage`
+
+`bower install portage`
+
 ## Intro
 
 Channels are used to publish messages on certain topics, and to subscribe
