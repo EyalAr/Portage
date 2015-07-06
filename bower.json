@@ -30,7 +30,7 @@
     "tests"
   ],
   "dependencies": {
-    "fuzzytree": "~0.0.5",
+    "fuzzytree": "~0.0.7",
     "lodash": "~3.10.0"
   }
 }

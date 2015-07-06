@@ -130,7 +130,7 @@ describe("greedy pattern topics", function(){
                     data = "foo",
                     spy,
                     called = 0;
-console.log("yo");
+
                 c.subscribe(pattern, function(_spy){
                     spy = _spy;
                     called++;
