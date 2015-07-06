@@ -6,6 +6,8 @@ Fast pub/sub for JS
 
 `bower install portage`
 
+Works with AMD, CommonJS, global (as `portage`) and ES6.
+
 ## Intro
 
 Portage is utilizing a [tree structure](https://github.com/EyalAr/FuzzyTree) to
