@@ -26,13 +26,18 @@ class Channel{
         return s;
     }
 
-    publish(topic, ...data){
+    publish(topic, data){
         var nodes = this._tree.match(topic),
             subs = _reduce(nodes, (subs, node) => {
                 _forEach(node.getData(), s => subs.push(s));
                 return subs;
             }, []);
-        _forEach(subs, s => s.invoke(data));
+        _forEach(subs, s => s.invoke(data, {
+            topic: topic,
+            called: s._called,
+            limit: s._limit,
+            last: s._limit !== null && s._called === s._limit - 1
+        }));
     }
 }
 

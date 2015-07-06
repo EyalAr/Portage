@@ -15,8 +15,8 @@ class Subscription{
         this._limit = null;
     }
 
-    invoke(data){
-        var r = this._cb.apply(null, data);
+    invoke(data, meta){
+        var r = this._cb(data, meta);
         this._called++;
         this._purge();
         return r;

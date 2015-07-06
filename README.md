@@ -12,9 +12,9 @@ Works with AMD, CommonJS, global (as `portage`) and ES6.
 
 Portage is utilizing a [tree structure](https://github.com/EyalAr/FuzzyTree) to
 [quickly](#benchmark) match publications with subscriptions; including support
-for subscriptions with wildcards (see below).
+for subscriptions with wild cards (see below).
 
-Publications and subscriptions are segmentized by channels. Channels are used to
+Publications and subscriptions are segmented by channels. Channels are used to
 publish messages on certain topics, and to subscribe to messages on certain
 topics (or a pattern of topics).
 
@@ -23,7 +23,7 @@ A channel internally maintains a tree structure of subscriptions.
 Topics are organized in a hierarchical manner. For example, `chat.new-message`
 is a sub-topic of `chat`. This mostly affects the way the library efficiently
 filters subscription handlers when a message is published, but also relates
-to the usage of wildcards in subscriptions (see below).
+to the usage of wild cards in subscriptions (see below).
 
 Hubs are simply an aggregation of channels, which can easily be accessed (and
 created on the fly) with a key.
@@ -61,10 +61,10 @@ returned. Otherwise the existing channel with that name is returned.
 
 ### Publish data on a topic
 
-`myChannel.publish(topic, arg1, arg2, ...)`
+`myChannel.publish(topic, data)`
 
 - `topic {String}`: The topic of the publication. See topic structure below.
-- `arg1, arg2, ...`: Arbitrary arguments of the publication.
+- `data {*}`: Data of the publication.
 
 ### Subscribe to a topic
 
@@ -73,8 +73,15 @@ returned. Otherwise the existing channel with that name is returned.
 - `pattern {String}`: The pattern of topics of which publications to subscribe.
    See topic structure below.
 - `callback {Function}`: Callback function to invoke when a message is published
-   whose topic matches the pattern. The function is called with the published
-   arguments.
+   whose topic matches the pattern. The function is called with two arguments:
+      0. `data`: The published data.
+      0. `meta`: An object which contains the following properties:
+         - `topic {String}`: The topic of the publication.
+         - `called {Integer}`: The number of times this subscription has been
+           invoked, **not** including the current time.
+         - `limit {Integer}`: Invocation limit of this subscription, or null if
+           no limit.
+         - `last {Boolean}`: Flag if this invocation is the last.
 
 **Return value** is an object with the following methods:
 

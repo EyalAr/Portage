@@ -136,11 +136,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	    }, {
 	        key: 'publish',
-	        value: function publish(topic) {
-	            for (var _len = arguments.length, data = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-	                data[_key - 1] = arguments[_key];
-	            }
-	
+	        value: function publish(topic, data) {
 	            var nodes = this._tree.match(topic),
 	                subs = (0, _lodash.reduce)(nodes, function (subs, node) {
 	                (0, _lodash.forEach)(node.getData(), function (s) {
@@ -149,7 +145,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return subs;
 	            }, []);
 	            (0, _lodash.forEach)(subs, function (s) {
-	                return s.invoke(data);
+	                return s.invoke(data, {
+	                    topic: topic,
+	                    called: s._called,
+	                    limit: s._limit,
+	                    last: s._limit !== null && s._called === s._limit - 1
+	                });
 	            });
 	        }
 	    }]);
@@ -202,8 +203,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    _createClass(Subscription, [{
 	        key: "invoke",
-	        value: function invoke(data) {
-	            var r = this._cb.apply(null, data);
+	        value: function invoke(data, meta) {
+	            var r = this._cb(data, meta);
 	            this._called++;
 	            this._purge();
 	            return r;
